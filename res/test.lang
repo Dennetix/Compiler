@@ -1,0 +1,21 @@
+add = (x, y) {
+    return x + y;
+};
+
+res = add(1, 2);
+if (res == 3 | res > 3) {
+
+}
+
+// for-loops
+i = 0;
+while (i < 5) {
+	print(i);
+	i++;
+}
+
+// strings
+str1 = "Hello     //comment inside a string";
+str2 = "World";
+
+print(str1 + " " + str2);
