@@ -3,6 +3,7 @@
 
 #include "Preprocessor.h"
 #include "Lexer.h"
+#include "Parser.h"
 
 std::vector<std::string> readFile(const std::string& path)
 {
@@ -22,13 +23,16 @@ std::vector<std::string> readFile(const std::string& path)
 int main() {
 	com::Preprocessor preprocessor;
 	com::Lexer lexer;
+	com::Parser parser;
 
 	std::vector<std::string> file = readFile("res/test.lang");
 	std::string code = preprocessor.process(file);
-	std::vector<std::pair<com::TokenType, std::string>> tokens = lexer.lex(code);
+	std::vector<com::Token> tokens = lexer.lex(code);
+	parser.parse(tokens);
 
-	for (auto p : tokens)
-		std::cout << static_cast<std::underlying_type<com::TokenType>::type>(p.first) << "\t" << p.second << std::endl;
+	auto str = com::tokensToString(tokens);
+	for (std::string s : str)
+		std::cout << s << std::endl;
 
 	return 0;
 }

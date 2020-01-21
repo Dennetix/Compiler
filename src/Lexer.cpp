@@ -108,6 +108,7 @@ namespace com {
 		}
 
 		_pushCurrentToken();
+		_push({ TokenType::END, "" });
 
 		return _tokens;
 	}
