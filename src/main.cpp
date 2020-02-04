@@ -25,14 +25,23 @@ int main() {
 	com::Lexer lexer;
 	com::Parser parser;
 
+	std::cout << " -------------------  INPUT  -------------------" << std::endl;
 	std::vector<std::string> file = readFile("res/test.lang");
-	std::string code = preprocessor.process(file);
-	std::vector<com::Token> tokens = lexer.lex(code);
-	parser.parse(tokens);
-
-	auto str = com::tokensToString(tokens);
-	for (std::string s : str)
+	for (std::string s : file)
 		std::cout << s << std::endl;
+
+	std::cout << "\n ----------------  PREPROCESSOR  ---------------" << std::endl;
+	std::string code = preprocessor.process(file);
+	std::cout << code << std::endl;
+
+	std::cout << "\n --------------  LEXICAL ANALYSIS  -------------" << std::endl;
+	std::vector<com::Token> tokens = lexer.lex(code);
+	for (com::Token t : tokens)
+		std::cout << com::tokenToString(t) << std::endl;
+
+	std::cout << "\n --------------  SYNTAX ANALYSIS  --------------" << std::endl;
+	com::Program tree = parser.parse(tokens);
+	tree.print();
 
 	return 0;
 }

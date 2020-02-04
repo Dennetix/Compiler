@@ -12,19 +12,7 @@ namespace com {
 
 		for (char c : file)
 		{
-			if (c == '"')
-			{
-				TokenType type = _currentToken.first;
-				_pushCurrentToken();
-
-				if (type != TokenType::STRING)
-					_currentToken.first = TokenType::STRING;
-			}
-			else if (_currentToken.first == TokenType::STRING)
-			{
-				_currentToken.second += c;
-			}
-			else if (std::string("+-*/<>!&|(){},;").find(c) != std::string::npos)
+			if (std::string("+-*/<>!&|(){};").find(c) != std::string::npos)
 			{
 				_pushCurrentToken();
 				if (c == '+')
@@ -53,8 +41,6 @@ namespace com {
 					_tokens.push_back({ TokenType::OPEN_CURLY_BRACKET, "" });
 				else if (c == '}')
 					_tokens.push_back({ TokenType::CLOSE_CURLY_BRACKET, "" });
-				else if (c == ',')
-					_tokens.push_back({ TokenType::COMMA, "" });
 				else if (c == ';')
 					_tokens.push_back({ TokenType::SEMICOLON, "" });
 			}
@@ -96,8 +82,6 @@ namespace com {
 						_push({ TokenType::KEY_IF, "" });
 					else if (_currentToken.second == "while")
 						_push({ TokenType::KEY_WHILE, "" });
-					else if (_currentToken.second == "return")
-						_push({ TokenType::KEY_RETURN, "" });
 				}
 			}
 			else if (std::string(" \n\r").find(c) == std::string::npos)
@@ -108,7 +92,7 @@ namespace com {
 		}
 
 		_pushCurrentToken();
-		_push({ TokenType::END, "" });
+		_push({ TokenType::EOI, "" });
 
 		return _tokens;
 	}
