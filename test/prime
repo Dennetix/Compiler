@@ -1,0 +1,16 @@
+n = 100;
+i = 2;
+while (i < n + 1) {
+    j = 2;
+    flag = 0;
+    while (j < i / 2 + 1) {
+        if (i % j == 0)
+            flag = 1;
+        j = j + 1;
+    }
+
+    if (!flag)
+        out(i);
+
+    i = i + 1;
+}

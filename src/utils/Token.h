@@ -1,7 +1,6 @@
 #pragma once
 
 #include <utility>
-#include <vector>
 #include <string>
 
 namespace com {
@@ -21,6 +20,7 @@ namespace com {
 		OP_SUB,
 		OP_MUL,
 		OP_DIV,
+		OP_MUD,
 		OP_EQUALS,
 		OP_LESS_THAN,
 		OP_GREATER_THAN,

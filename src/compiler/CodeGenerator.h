@@ -2,14 +2,14 @@
 
 #include <sstream>
 
-#include "utils/ASTTypes.h"
+#include "../utils/ASTTypes.h"
 
 namespace com {
 
     class CodeGenerator
     {
     public:
-        std::string generate(const Program& program);
+        std::string generate(const Program& program, const std::vector<std::string>& symbols);
 
     private:
         void _genStatement(const Statement* stmt);

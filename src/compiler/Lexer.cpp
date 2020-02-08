@@ -1,7 +1,8 @@
 #include "Lexer.h"
 
-#include <iostream>
 #include <regex>
+
+#include "../utils/ErrorHandler.h"
 
 namespace com {
 
@@ -12,7 +13,7 @@ namespace com {
 
 		for (char c : file)
 		{
-			if (std::string("+-*/<>!&|(){};").find(c) != std::string::npos)
+			if (std::string("+-*/%<>!&|(){};").find(c) != std::string::npos)
 			{
 				_pushCurrentToken();
 				if (c == '+')
@@ -23,6 +24,8 @@ namespace com {
 					_tokens.push_back({ TokenType::OP_MUL, "" });
 				else if (c == '/')
 					_tokens.push_back({ TokenType::OP_DIV, "" });
+				else if (c == '%')
+					_tokens.push_back({ TokenType::OP_MUD, "" });
 				else if (c == '<')
 					_tokens.push_back({ TokenType::OP_LESS_THAN, "" });
 				else if (c == '>')
@@ -88,9 +91,8 @@ namespace com {
 			}
 			else if (std::string(" \n\r").find(c) == std::string::npos)
 			{
-				std::cerr << "Error: unexpected character" << std::endl;
+				ErrorHandler::addError("Lexing error: unexpected character '" + std::string(1, c) + "'");
 			}
-
 		}
 
 		_pushCurrentToken();

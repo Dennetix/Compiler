@@ -1,9 +1,7 @@
 #include "Parser.h"
 
-#include <iostream>
-#include <iterator>
-
-#include "utils/Exception.h"
+#include "../utils/Exception.h"
+#include "../utils/ErrorHandler.h"
 
 namespace com {
 
@@ -17,10 +15,12 @@ namespace com {
         try
         {
             program.statements = _parseStatements();
+            if (_currentToken->first != TokenType::EOI)
+                throw Exception("unexpected token " + tokenTypeToString(_currentToken->first));
         }
         catch (const std::exception& e)
         {
-            std::cerr << "Parsing error: " << e.what() << std::endl;
+            ErrorHandler::addError("Parsing error: " + std::string(e.what()), true);
         }
 
         return program;
@@ -227,7 +227,7 @@ namespace com {
         std::unique_ptr<Expression> left = _parseLogicalNot();
         if (left)
         {
-            while (_currentToken->first == TokenType::OP_MUL || _currentToken->first == TokenType::OP_DIV)
+            while (_currentToken->first == TokenType::OP_MUL || _currentToken->first == TokenType::OP_DIV || _currentToken->first == TokenType::OP_MUD)
             {
                 TokenType type = _currentToken->first;
                 std::unique_ptr<BinaryExpression> e(new BinaryExpression(Expression::ExpressionType::BINARY, type));

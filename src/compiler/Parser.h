@@ -1,7 +1,7 @@
 #pragma once
 
-#include "utils/Token.h"
-#include "utils/ASTTypes.h"
+#include "../utils/Token.h"
+#include "../utils/ASTTypes.h"
 
 namespace com {
 

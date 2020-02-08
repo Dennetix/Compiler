@@ -24,6 +24,8 @@ namespace com {
             return "'*'";
         case TokenType::OP_DIV:
             return "'/'";
+        case TokenType::OP_MUD:
+            return "'%'";
         case TokenType::OP_EQUALS:
             return "'=='";
         case TokenType::OP_LESS_THAN:

@@ -2,11 +2,14 @@
 
 namespace com {
 
-    std::string CodeGenerator::generate(const Program& program)
+    std::string CodeGenerator::generate(const Program& program, const std::vector<std::string>& symbols)
     {
         _ss.clear();
         _branchNum = 0;
 
+        _ss << "\t.data" << std::endl;
+        for (std::string s : symbols)
+            _ss << "w_" << s << ":\t.word 0" << std::endl;
         _ss << "\t.text" << std::endl;
         _ss << "\t.globl main" << std::endl;
         _ss << "main:" << std::endl;
@@ -80,13 +83,9 @@ namespace com {
         {
             auto e = reinterpret_cast<const LiteralExpression*>(expr);
             if (e->expressionType == TokenType::NUMBER)
-            {
                 _ss << "\tli $a0 " << e->value << std::endl;
-            }
             else
-            {
-                _ss << "\tli $a0 0 \t#every variable is 0 for now" << std::endl;
-            }
+                _ss << "\tlw $a0 w_" << e->value << std::endl;
             break;
         }
         case Expression::ExpressionType::BINARY:
@@ -96,7 +95,8 @@ namespace com {
             _genExpression(e->right.get());
             if (e->expressionType == TokenType::OP_ASSIGN)
             {
-                _ss << "\t#assignment does nothing at the moment" << std::endl;
+                auto left = reinterpret_cast<const LiteralExpression*>(e->left.get());
+                _ss << "\tsw $a0 w_" << left->value << std::endl;
             }
             else
             {
@@ -108,16 +108,20 @@ namespace com {
                 switch (e->expressionType)
                 {
                 case TokenType::OP_ADD:
-                    _ss << "\tadd $a0 $a0 $t1" << std::endl;
+                    _ss << "\taddu $a0 $a0 $t1" << std::endl;
                     break;
                 case TokenType::OP_SUB:
-                    _ss << "\tsub $a0 $a0 $t1" << std::endl;
+                    _ss << "\tsubu $a0 $a0 $t1" << std::endl;
                     break;
                 case TokenType::OP_MUL:
-                    _ss << "\tmul $a0 $a0 $t1" << std::endl;
+                    _ss << "\tmulu $a0 $a0 $t1" << std::endl;
                     break;
                 case TokenType::OP_DIV:
-                    _ss << "\tdiv $a0 $a0 $t1" << std::endl;
+                    _ss << "\tdivu $a0 $a0 $t1" << std::endl;
+                    break;
+                case TokenType::OP_MUD:
+                    _ss << "\tdivu $a0 $t1" << std::endl;
+                    _ss << "\tmfhi $a0" << std::endl;
                     break;
                 case TokenType::OP_EQUALS:
                     _ss << "\tbeq $a0 $t1 equ_true_" << n << std::endl;
