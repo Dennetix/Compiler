@@ -82,6 +82,8 @@ namespace com {
 						_push({ TokenType::KEY_IF, "" });
 					else if (_currentToken.second == "while")
 						_push({ TokenType::KEY_WHILE, "" });
+					else if (_currentToken.second == "out")
+						_push({ TokenType::KEY_OUT, "" });
 				}
 			}
 			else if (std::string(" \n\r").find(c) == std::string::npos)

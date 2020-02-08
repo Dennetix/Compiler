@@ -86,6 +86,16 @@ namespace com {
                 throw Exception("expected statement as body in loop statement");
             return s;
         }
+        else if (_acceptToken(TokenType::KEY_OUT))
+        {
+            std::unique_ptr<ExpressionStatement> s(new ExpressionStatement(Statement::StatementType::OUTPUT));
+            _expectToken(TokenType::OPEN_BRACKET);
+            if (!(s->expression = _parseExpression()))
+                throw Exception("expected expression in output statement");
+            _expectToken(TokenType::CLOSE_BRACKET);
+            _expectToken(TokenType::SEMICOLON);
+            return s;
+        }
         else if (_acceptToken(TokenType::SEMICOLON))
         {
             return std::unique_ptr<Statement>(new Statement(Statement::StatementType::NOOP));
@@ -260,8 +270,8 @@ namespace com {
     {
         if (_acceptToken(TokenType::OPEN_BRACKET))
         {
-            std::unique_ptr<EnclosedExpression> e(new EnclosedExpression(Expression::ExpressionType::ENCLOSED));
-            if (!(e->expression = _parseExpression()))
+            auto e = _parseExpression();
+            if (!e)
                 throw Exception("expected expression after token " + tokenTypeToString(TokenType::OPEN_BRACKET));
             _expectToken(TokenType::CLOSE_BRACKET);
             return e;

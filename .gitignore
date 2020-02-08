@@ -31,11 +31,11 @@
 *.out
 *.app
 
-# Buckaroo
+# Buck
 .buckd
 buck-out
 .buckconfig.local
 .buckconfig.d
-buckaroo
 
 .vscode
+.vs

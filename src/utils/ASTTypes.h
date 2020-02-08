@@ -15,7 +15,6 @@ namespace com {
         enum class ExpressionType
         {
             LITERAL,
-            ENCLOSED,
             BINARY,
             UNARY
         };
@@ -32,14 +31,6 @@ namespace com {
 
         TokenType expressionType;
         std::string value;
-    };
-
-    struct EnclosedExpression
-        : Expression
-    {
-        using Expression::Expression;
-
-        std::unique_ptr<Expression> expression;
     };
 
     struct BinaryExpression
@@ -68,6 +59,7 @@ namespace com {
             BLOCK,
             CONDITIONAL,
             LOOP,
+            OUTPUT,
             EXPRESSION,
             NOOP
         };

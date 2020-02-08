@@ -18,7 +18,7 @@ namespace com {
 
     UnaryExpression::UnaryExpression(ExpressionType type, TokenType expressionType)
         : Expression(type), expressionType(expressionType)
-    {}
+    { }
 
     Statement::Statement(StatementType t)
         : type(t)
@@ -65,6 +65,14 @@ namespace com {
             _printStatement(s->body.get());
             break;
         }
+        case Statement::StatementType::OUTPUT:
+        {
+            auto s = reinterpret_cast<const ExpressionStatement*>(stmt);
+            _printIndented("-Statement: Output");
+            _printIndented(" Expression:");
+            _printExpression(s->expression.get());
+            break;
+        }
         case Statement::StatementType::EXPRESSION:
         {
             auto s = reinterpret_cast<const ExpressionStatement*>(stmt);
@@ -91,14 +99,6 @@ namespace com {
             _printIndented("-Expression: Literal");
             _printIndented(" Type: " + tokenTypeToString(e->expressionType));
             _printIndented(" Value: " + e->value);
-            break;
-        }
-        case Expression::ExpressionType::ENCLOSED:
-        {
-            auto e = reinterpret_cast<const EnclosedExpression*>(expr);
-            _printIndented("-Expression: Enclosed");
-            _printIndented(" Expression:");
-            _printExpression(e->expression.get());
             break;
         }
         case Expression::ExpressionType::BINARY:

@@ -15,6 +15,7 @@ namespace com {
 
 		KEY_IF,
 		KEY_WHILE,
+		KEY_OUT,
 
 		OP_ADD,
 		OP_SUB,

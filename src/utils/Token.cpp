@@ -14,6 +14,8 @@ namespace com {
             return "'if'";
         case TokenType::KEY_WHILE:
             return "'while'";
+        case TokenType::KEY_OUT:
+            return "'out'";
         case TokenType::OP_ADD:
             return "'+'";
         case TokenType::OP_SUB:
