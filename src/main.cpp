@@ -94,9 +94,15 @@ int main(int argc, char** argv)
 
 	std::cout << "\n --------------  CODE GENERATION  --------------" << std::endl;
 	std::string output = codeGenerator.generate(tree, symbols);
-	std::cout << output << std::endl;
+	std::cout << output;
 
+	std::cout << "\n -------------------  OUTPUT  ------------------" << std::endl;
 	writeOutput(outPath, output);
+	if (com::ErrorHandler::printErrors())
+		return 1;
+	std::cout << "Written output to '" << outPath << "'" << std::endl;
+
+
 
 	return 0;
 }

@@ -5,9 +5,9 @@
 
 namespace com {
 
-    Program Parser::parse(const std::vector<Token>& _tokens)
+    Program Parser::parse(const std::vector<Token>& tokens)
     {
-        this->_tokens = _tokens;
+        _tokens = tokens;
         _currentToken = this->_tokens.begin();
 
         Program program;
@@ -247,14 +247,14 @@ namespace com {
         if (_acceptToken(TokenType::LOP_NOT))
         {
             std::unique_ptr<UnaryExpression> e(new UnaryExpression(Expression::ExpressionType::UNARY, TokenType::LOP_NOT));
-            if (!(e->expression = _parseUnaryMinus()))
+            if (!(e->expression = _parseMinus()))
                 throw Exception("expected expression after token " + tokenTypeToString(TokenType::LOP_NOT));
             return e;
         }
-        return _parseUnaryMinus();
+        return _parseMinus();
     }
 
-    std::unique_ptr<Expression> Parser::_parseUnaryMinus()
+    std::unique_ptr<Expression> Parser::_parseMinus()
     {
         if (_acceptToken(TokenType::OP_SUB))
         {

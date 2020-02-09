@@ -52,11 +52,8 @@ namespace com {
         case Expression::ExpressionType::LITERAL:
         {
             auto e = reinterpret_cast<const LiteralExpression*>(expr);
-            if (e->expressionType == TokenType::SYMBOL)
-            {
-                if (std::find(_symbols.begin(), _symbols.end(), e->value) == _symbols.end())
-                    _symbols.push_back(e->value);
-            }
+            if (e->expressionType == TokenType::SYMBOL && std::find(_symbols.begin(), _symbols.end(), e->value) == _symbols.end())
+                _symbols.push_back(e->value);
             break;
         }
         case Expression::ExpressionType::BINARY:

@@ -25,7 +25,7 @@ namespace com {
         std::unique_ptr<Expression> _parseSum();
         std::unique_ptr<Expression> _parseProduct();
         std::unique_ptr<Expression> _parseLogicalNot();
-        std::unique_ptr<Expression> _parseUnaryMinus();
+        std::unique_ptr<Expression> _parseMinus();
         std::unique_ptr<Expression> _parseLiteral();
 
     private:

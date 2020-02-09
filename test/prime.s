@@ -10,7 +10,7 @@ main:
 	sw $a0 w_n
 	li $a0 2
 	sw $a0 w_i
-loop_start_3:
+loop_1:
 	li $a0 1
 	addiu $sp $sp -4
 	sw $a0 0($sp)
@@ -24,18 +24,18 @@ loop_start_3:
 	lw $t1 0($sp)
 	addiu $sp $sp 4
 	slt $a0 $a0 $t1
-	beq $a0 1 lt_true_4
+	beq $a0 1 lt_2
 	li $a0 0
-	b lt_end_4
-lt_true_4:
+	b end_lt_2
+lt_2:
 	li $a0 1
-lt_end_4:
-	beq $a0 $zero loop_end_3
+end_lt_2:
+	beq $a0 $zero end_loop_1
 	li $a0 2
 	sw $a0 w_j
 	li $a0 0
 	sw $a0 w_flag
-loop_start_8:
+loop_3:
 	li $a0 1
 	addiu $sp $sp -4
 	sw $a0 0($sp)
@@ -55,13 +55,13 @@ loop_start_8:
 	lw $t1 0($sp)
 	addiu $sp $sp 4
 	slt $a0 $a0 $t1
-	beq $a0 1 lt_true_9
+	beq $a0 1 lt_4
 	li $a0 0
-	b lt_end_9
-lt_true_9:
+	b end_lt_4
+lt_4:
 	li $a0 1
-lt_end_9:
-	beq $a0 $zero loop_end_8
+end_lt_4:
+	beq $a0 $zero end_loop_3
 	li $a0 0
 	addiu $sp $sp -4
 	sw $a0 0($sp)
@@ -75,16 +75,16 @@ lt_end_9:
 	mfhi $a0
 	lw $t1 0($sp)
 	addiu $sp $sp 4
-	beq $a0 $t1 equ_true_13
+	beq $a0 $t1 equ_5
 	li $a0 0
-	b equ_end_13
-equ_true_13:
+	b end_equ_5
+equ_5:
 	li $a0 1
-equ_end_13:
-	beq $a0 $zero con_end_12
+end_equ_5:
+	beq $a0 $zero end_con_6
 	li $a0 1
 	sw $a0 w_flag
-con_end_12:
+end_con_6:
 	li $a0 1
 	addiu $sp $sp -4
 	sw $a0 0($sp)
@@ -93,23 +93,23 @@ con_end_12:
 	addiu $sp $sp 4
 	addu $a0 $a0 $t1
 	sw $a0 w_j
-	b loop_start_8
-loop_end_8:
+	b loop_3
+end_loop_3:
 	lw $a0 w_flag
-	beq $a0 $zero lnot_true_19
+	beq $a0 $zero lnot_7
 	li $a0 0
-	b lnot_end_19
-lnot_true_19:
+	b end_lnot_7
+lnot_7:
 	li $a0 1
-lnot_end_19:
-	beq $a0 $zero con_end_18
+end_lnot_7:
+	beq $a0 $zero end_con_8
 	lw $a0 w_i
 	li $v0 1
 	syscall
 	li $v0 11
 	li $a0 10
 	syscall
-con_end_18:
+end_con_8:
 	li $a0 1
 	addiu $sp $sp -4
 	sw $a0 0($sp)
@@ -118,6 +118,6 @@ con_end_18:
 	addiu $sp $sp 4
 	addu $a0 $a0 $t1
 	sw $a0 w_i
-	b loop_start_3
-loop_end_3:
+	b loop_1
+end_loop_1:
 	jr $ra

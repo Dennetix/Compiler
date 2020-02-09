@@ -8,7 +8,7 @@ w_next:	.word 0
 main:
 	li $a0 1
 	sw $a0 w_t2
-loop_start_2:
+loop_1:
 	li $a0 45
 	addiu $sp $sp -4
 	sw $a0 0($sp)
@@ -16,13 +16,13 @@ loop_start_2:
 	lw $t1 0($sp)
 	addiu $sp $sp 4
 	slt $a0 $a0 $t1
-	beq $a0 1 lt_true_3
+	beq $a0 1 lt_2
 	li $a0 0
-	b lt_end_3
-lt_true_3:
+	b end_lt_2
+lt_2:
 	li $a0 1
-lt_end_3:
-	beq $a0 $zero loop_end_2
+end_lt_2:
+	beq $a0 $zero end_loop_1
 	lw $a0 w_t1
 	li $v0 1
 	syscall
@@ -49,6 +49,6 @@ lt_end_3:
 	addiu $sp $sp 4
 	addu $a0 $a0 $t1
 	sw $a0 w_i
-	b loop_start_2
-loop_end_2:
+	b loop_1
+end_loop_1:
 	jr $ra

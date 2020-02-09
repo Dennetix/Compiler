@@ -36,23 +36,23 @@ namespace com {
         case Statement::StatementType::CONDITIONAL:
         {
             auto s = reinterpret_cast<const ConditionalCompoundStatement*>(stmt);
-            int n = ++_branchNum;
             _genExpression(s->condition.get());
-            _ss << "\tbeq $a0 $zero con_end_" << n << std::endl;
+            int branchNum = ++_branchNum;
+            _ss << "\tbeq $a0 $zero end_con_" << branchNum << std::endl;
             _genStatement(s->body.get());
-            _ss << "con_end_" << n << ":" << std::endl;
+            _ss << "end_con_" << branchNum << ":" << std::endl;
             break;
         }
         case Statement::StatementType::LOOP:
         {
             auto s = reinterpret_cast<const ConditionalCompoundStatement*>(stmt);
-            int n = ++_branchNum;
-            _ss << "loop_start_" << n << ":" << std::endl;
+            int branchNum = ++_branchNum;
+            _ss << "loop_" << branchNum << ":" << std::endl;
             _genExpression(s->condition.get());
-            _ss << "\tbeq $a0 $zero loop_end_" << n << std::endl;
+            _ss << "\tbeq $a0 $zero end_loop_" << branchNum << std::endl;
             _genStatement(s->body.get());
-            _ss << "\tb loop_start_" << n << std::endl;
-            _ss << "loop_end_" << n << ":" << std::endl;
+            _ss << "\tb loop_" << branchNum << std::endl;
+            _ss << "end_loop_" << branchNum << ":" << std::endl;
             break;
         }
         case Statement::StatementType::OUTPUT:
@@ -91,7 +91,6 @@ namespace com {
         case Expression::ExpressionType::BINARY:
         {
             auto e = reinterpret_cast<const BinaryExpression*>(expr);
-            int n = ++_branchNum;
             _genExpression(e->right.get());
             if (e->expressionType == TokenType::OP_ASSIGN)
             {
@@ -124,48 +123,48 @@ namespace com {
                     _ss << "\tmfhi $a0" << std::endl;
                     break;
                 case TokenType::OP_EQUALS:
-                    _ss << "\tbeq $a0 $t1 equ_true_" << n << std::endl;
+                    _ss << "\tbeq $a0 $t1 equ_" << ++_branchNum << std::endl;
                     _ss << "\tli $a0 0" << std::endl;
-                    _ss << "\tb equ_end_" << n << std::endl;
-                    _ss << "equ_true_" << n << ":" << std::endl;
+                    _ss << "\tb end_equ_" << _branchNum << std::endl;
+                    _ss << "equ_" << _branchNum << ":" << std::endl;
                     _ss << "\tli $a0 1" << std::endl;
-                    _ss << "equ_end_" << n << ":" << std::endl;
+                    _ss << "end_equ_" << _branchNum << ":" << std::endl;
                     break;
                 case TokenType::OP_LESS_THAN:
                     _ss << "\tslt $a0 $a0 $t1" << std::endl;
-                    _ss << "\tbeq $a0 1 lt_true_" << n << std::endl;
+                    _ss << "\tbeq $a0 1 lt_" << ++_branchNum << std::endl;
                     _ss << "\tli $a0 0" << std::endl;
-                    _ss << "\tb lt_end_" << n << std::endl;
-                    _ss << "lt_true_" << n << ":" << std::endl;
+                    _ss << "\tb end_lt_" << _branchNum << std::endl;
+                    _ss << "lt_" << _branchNum << ":" << std::endl;
                     _ss << "\tli $a0 1" << std::endl;
-                    _ss << "lt_end_" << n << ":" << std::endl;
+                    _ss << "end_lt_" << _branchNum << ":" << std::endl;
                     break;
                 case TokenType::OP_GREATER_THAN:
                     _ss << "\tslt $a0 $t1 $a0" << std::endl;
-                    _ss << "\tbeq $a0 1 gt_true_" << n << std::endl;
+                    _ss << "\tbeq $a0 1 gt_" << ++_branchNum << std::endl;
                     _ss << "\tli $a0 0" << std::endl;
-                    _ss << "\tb gt_end_" << n << std::endl;
-                    _ss << "gt_true_" << n << ":" << std::endl;
+                    _ss << "\tb end_gt_" << _branchNum << std::endl;
+                    _ss << "gt_" << _branchNum << ":" << std::endl;
                     _ss << "\tli $a0 1" << std::endl;
-                    _ss << "gt_end_" << n << ":" << std::endl;
+                    _ss << "end_gt_" << _branchNum << ":" << std::endl;
                     break;
                 case TokenType::LOP_AND:
-                    _ss << "\tbne $a0 1 land_false_" << n << std::endl;
-                    _ss << "\tbne $t1 1 land_false_" << n << std::endl;
+                    _ss << "\tbne $a0 1 land_" << ++_branchNum << std::endl;
+                    _ss << "\tbne $t1 1 land_" << _branchNum << std::endl;
                     _ss << "\tli $a0 1" << std::endl;
-                    _ss << "\tb land_end_" << n << std::endl;
-                    _ss << "land_false_" << n << ":" << std::endl;
+                    _ss << "\tb end_land_" << _branchNum << std::endl;
+                    _ss << "land_" << _branchNum << ":" << std::endl;
                     _ss << "\tli $a0 0" << std::endl;
-                    _ss << "land_end_" << n << ":" << std::endl;
+                    _ss << "end_land_" << _branchNum << ":" << std::endl;
                     break;
                 case TokenType::LOP_OR:
-                    _ss << "\tbeq $a0 1 lor_true_" << n << std::endl;
-                    _ss << "\tbeq $t1 1 lor_true_" << n << std::endl;
+                    _ss << "\tbeq $a0 1 lor_" << ++_branchNum << std::endl;
+                    _ss << "\tbeq $t1 1 lor_" << _branchNum << std::endl;
                     _ss << "\tli $a0 0" << std::endl;
-                    _ss << "\tb lor_end_" << n << std::endl;
-                    _ss << "lor_true_" << n << ":" << std::endl;
+                    _ss << "\tb end_lor_" << _branchNum << std::endl;
+                    _ss << "lor_" << _branchNum << ":" << std::endl;
                     _ss << "\tli $a0 1" << std::endl;
-                    _ss << "lor_end_" << n << ":" << std::endl;
+                    _ss << "end_lor_" << _branchNum << ":" << std::endl;
                     break;
                 }
             }
@@ -174,16 +173,15 @@ namespace com {
         case Expression::ExpressionType::UNARY:
         {
             auto e = reinterpret_cast<const UnaryExpression*>(expr);
-            int n = ++_branchNum;
             _genExpression(e->expression.get());
             if (e->expressionType == TokenType::LOP_NOT)
             {
-                _ss << "\tbeq $a0 $zero lnot_true_" << n << std::endl;
+                _ss << "\tbeq $a0 $zero lnot_" << ++_branchNum << std::endl;
                 _ss << "\tli $a0 0" << std::endl;
-                _ss << "\tb lnot_end_" << n << std::endl;
-                _ss << "lnot_true_" << n << ":" << std::endl;
+                _ss << "\tb end_lnot_" << _branchNum << std::endl;
+                _ss << "lnot_" << _branchNum << ":" << std::endl;
                 _ss << "\tli $a0 1" << std::endl;
-                _ss << "lnot_end_" << n << ":" << std::endl;
+                _ss << "end_lnot_" << _branchNum << ":" << std::endl;
             }
             else
             {
