@@ -1,5 +1,5 @@
 t2 = 1;
-while (i < 20) {
+while (i < 45) {
     out(t1);
     next = t1 + t2;
     t1 = t2;

@@ -1,7 +1,5 @@
 #include "Preprocessor.h"
 
-#include <iostream>
-
 namespace com {
 
 	std::string Preprocessor::process(const std::vector<std::string>& file)

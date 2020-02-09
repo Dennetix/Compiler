@@ -9,7 +9,7 @@ main:
 	li $a0 1
 	sw $a0 w_t2
 loop_start_2:
-	li $a0 20
+	li $a0 45
 	addiu $sp $sp -4
 	sw $a0 0($sp)
 	lw $a0 w_i
