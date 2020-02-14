@@ -1,7 +1,6 @@
 prog    ::= stmts
 
 stmts   ::= stmt stmts
-        |   e
 
 stmt    ::= "{" stmts "}"
         |   "if" "(" expr ")" stmt
@@ -9,18 +8,19 @@ stmt    ::= "{" stmts "}"
         |   "out" "(" expr ")" ";"
         |   expr ";"
         |   ";"
+        |   e
 
 expr    ::= assgn
 assgn   ::= lor { "=" lor }
 lor     ::= land { "|" land }
 land    ::= equ { "&" equ }
 equ     ::= rela { "==" rela }
-rela    ::= sum { r_op sum }
-sum     ::= term { add-op term }
-term    ::= lnot { mul-op lnot }
-lnot    ::= "!" umin
-        |   umin
-umin    ::= "-" lit
+rela    ::= sum { rel_op sum }
+sum     ::= prod { add-op prod }
+prod    ::= lnot { mul-op lnot }
+lnot    ::= "!" min
+        |   min
+min    ::= "-" lit
         |   lit
 lit     ::= "(" expr ")"
         |   symbol
