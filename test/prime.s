@@ -1,23 +1,14 @@
 	.data
-w_n:	.word 0
 w_i:	.word 0
 w_j:	.word 0
 w_flag:	.word 0
 	.text
 	.globl main
 main:
-	li $a0 100
-	sw $a0 w_n
 	li $a0 2
 	sw $a0 w_i
 loop_1:
-	li $a0 1
-	addiu $sp $sp -4
-	sw $a0 0($sp)
-	lw $a0 w_n
-	lw $t1 0($sp)
-	addiu $sp $sp 4
-	addu $a0 $a0 $t1
+	li $a0 100
 	addiu $sp $sp -4
 	sw $a0 0($sp)
 	lw $a0 w_i
